@@ -66,20 +66,10 @@ class VerticalItemCell: UITableViewCell, UICollectionViewDataSource, UICollectio
         return CGSize(width: size, height: size)
     }
     
-    func updateRandomItem() {
-        let randomIndex = Int.random(in: 0..<horizontalItems.count)
-        let indexPath = IndexPath(item: randomIndex, section: 0)
+    func updateItem(updateIndex: Int, updatedNumber: Int) {
+        let indexPath = IndexPath(item: updateIndex, section: 0)
         if let cell = collectionView.cellForItem(at: indexPath) as? HorizontalItemCell {
-            let updatedRandomNumber = Int.random(in: 1...100)
-            horizontalItems[randomIndex].number = updatedRandomNumber
-            cell.numberLabel.text = "\(updatedRandomNumber)"
+            cell.numberLabel.text = "\(updatedNumber)"
         }
     }
-    
-//    func updateItem(updateIndex: Int, updatedNumber: Int) {
-//        let indexPath = IndexPath(item: updateIndex, section: 0)
-//        if let cell = collectionView.cellForItem(at: indexPath) as? HorizontalItemCell {
-//            cell.numberLabel.text = "\(updatedNumber)"
-//        }
-//    }
 }

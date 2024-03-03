@@ -12,8 +12,9 @@ class MainViewModel {
     var timer: DispatchSourceTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.global())
     
     var updateTableView: (() -> Void)?
-    var updateRandomHorizontalCell: (() -> Void)?
-//    var updateRandomHorizontalCell: (([Int]) -> Void)?
+    var updateRandomHorizontalCell: (([Int]) -> Void)?
+    
+    var isUpdatingData: Bool = false
     
     func loadData() {
         verticalItems = loadTestData()
@@ -37,20 +38,27 @@ class MainViewModel {
     private func startTimer() {
         timer.schedule(deadline: .now(), repeating: .seconds(1))
         timer.setEventHandler { [weak self] in
-            self?.updateRandomHorizontalCell?()
-//            self?.updateRandomItemInEveryVerticalItem();
+            self?.updateRandomHorizontalItem();
         }
         timer.resume()
     }
     
-//    func updateRandomItemInEveryVerticalItem() {
-//        var updateIndicies = [Int]()
-//        for index in verticalItems.indices {
-//            let randomIndex = Int.random(in: 0..<verticalItems[index].horizontalItems.count)
-//            let updatedRandomNumber = Int.random(in: 1...100)
-//            verticalItems[index].horizontalItems[randomIndex].number = updatedRandomNumber
-//            updateIndicies.append(randomIndex)
-//        }
-//        updateRandomHorizontalCell?(updateIndicies)
-//    }
+    func updateRandomHorizontalItem() {
+        if !isUpdatingData {
+            isUpdatingData = true
+            DispatchQueue.global(qos: .background).async { [self] in
+                Task {
+                    var updateIndicies = [Int]()
+                    for index in verticalItems.indices {
+                        let randomIndex = Int.random(in: 0..<verticalItems[index].horizontalItems.count)
+                        let updatedRandomNumber = Int.random(in: 1...100)
+                        verticalItems[index].horizontalItems[randomIndex].number = updatedRandomNumber
+                        updateIndicies.append(randomIndex)
+                    }
+                    updateRandomHorizontalCell?(updateIndicies)
+                    isUpdatingData = false
+                }
+            }
+        }
+    }
 }
