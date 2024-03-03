@@ -13,6 +13,7 @@ class MainViewModel {
     
     var updateTableView: (() -> Void)?
     var updateRandomHorizontalCell: (() -> Void)?
+//    var updateRandomHorizontalCell: (([Int]) -> Void)?
     
     func loadData() {
         verticalItems = loadTestData()
@@ -37,7 +38,19 @@ class MainViewModel {
         timer.schedule(deadline: .now(), repeating: .seconds(1))
         timer.setEventHandler { [weak self] in
             self?.updateRandomHorizontalCell?()
+//            self?.updateRandomItemInEveryVerticalItem();
         }
         timer.resume()
     }
+    
+//    func updateRandomItemInEveryVerticalItem() {
+//        var updateIndicies = [Int]()
+//        for index in verticalItems.indices {
+//            let randomIndex = Int.random(in: 0..<verticalItems[index].horizontalItems.count)
+//            let updatedRandomNumber = Int.random(in: 1...100)
+//            verticalItems[index].horizontalItems[randomIndex].number = updatedRandomNumber
+//            updateIndicies.append(randomIndex)
+//        }
+//        updateRandomHorizontalCell?(updateIndicies)
+//    }
 }

@@ -5,7 +5,6 @@
 //  Created by Vitaliy Shmikov on 02.03.2024.
 //
 
-import Foundation
 import UIKit
 
 class HorizontalItemCell: UICollectionViewCell {

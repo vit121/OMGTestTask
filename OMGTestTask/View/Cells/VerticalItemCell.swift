@@ -5,7 +5,6 @@
 //  Created by Vitaliy Shmikov on 02.03.2024.
 //
 
-import Foundation
 import UIKit
 
 class VerticalItemCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -47,7 +46,6 @@ class VerticalItemCell: UITableViewCell, UICollectionViewDataSource, UICollectio
         }
     }
 
-    
     func setupCell(verticalItemModel: VerticalItemModel) {
         horizontalItems = verticalItemModel.horizontalItems
         collectionView.reloadData()
@@ -77,4 +75,11 @@ class VerticalItemCell: UITableViewCell, UICollectionViewDataSource, UICollectio
             cell.numberLabel.text = "\(updatedRandomNumber)"
         }
     }
+    
+//    func updateItem(updateIndex: Int, updatedNumber: Int) {
+//        let indexPath = IndexPath(item: updateIndex, section: 0)
+//        if let cell = collectionView.cellForItem(at: indexPath) as? HorizontalItemCell {
+//            cell.numberLabel.text = "\(updatedNumber)"
+//        }
+//    }
 }

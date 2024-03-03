@@ -34,6 +34,9 @@ class MainViewController: UIViewController, UITableViewDataSource {
         viewModel.updateRandomHorizontalCell = { [weak self] in
             self?.updateRandomItemInEachCell()
         }
+//        viewModel.updateRandomHorizontalCell = { updateIndices in
+//            self.updateRandomItemInEachCell(updateIndices: updateIndices)
+//        }
         viewModel.loadData()
     }
     
@@ -55,4 +58,14 @@ class MainViewController: UIViewController, UITableViewDataSource {
             }
         }
     }
+    
+//    func updateRandomItemInEachCell(updateIndices: [Int]) {
+//        DispatchQueue.main.async {
+//            guard let visibleCells = self.tableView.visibleCells as? [VerticalItemCell] else { return }
+//            for index in visibleCells.indices {
+//                let updatedNumber = self.viewModel.verticalItems[index].horizontalItems[updateIndices[index]].number
+//                visibleCells[index].updateItem(updateIndex: updateIndices[index], updatedNumber: updatedNumber)
+//            }
+//        }
+//    }
 }
