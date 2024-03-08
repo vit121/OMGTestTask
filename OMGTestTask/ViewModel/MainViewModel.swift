@@ -14,7 +14,8 @@ class MainViewModel {
     var updateTableView: (() -> Void)?
     var updateRandomHorizontalCell: (([Int]) -> Void)?
     
-    var isUpdatingData: Bool = false
+    let backgroundQueue = DispatchQueue.global(qos: .background)
+    let backgroundLock = NSLock()
     
     func loadData() {
         verticalItems = loadTestData()
@@ -26,7 +27,7 @@ class MainViewModel {
         let itemsCount = Int.random(in: 101...150)
         for _ in 0..<itemsCount {
             var horizontalItems: [HorizontalItemModel] = []
-            let horizontalCount = Int.random(in: 11...20)
+            let horizontalCount = Int.random(in: 11...15)
             for _ in 0..<horizontalCount {
                 horizontalItems.append(HorizontalItemModel(number: Int.random(in: 1...100)))
             }
@@ -44,21 +45,17 @@ class MainViewModel {
     }
     
     func updateRandomHorizontalItem() {
-        if !isUpdatingData {
-            isUpdatingData = true
-            DispatchQueue.global(qos: .background).async { [self] in
-                Task {
-                    var updateIndicies = [Int]()
-                    for index in verticalItems.indices {
-                        let randomIndex = Int.random(in: 0..<verticalItems[index].horizontalItems.count)
-                        let updatedRandomNumber = Int.random(in: 1...100)
-                        verticalItems[index].horizontalItems[randomIndex].number = updatedRandomNumber
-                        updateIndicies.append(randomIndex)
-                    }
-                    updateRandomHorizontalCell?(updateIndicies)
-                    isUpdatingData = false
-                }
+        backgroundQueue.async { [self] in
+            backgroundLock.lock()
+            var updateIndicies = [Int]()
+            for index in verticalItems.indices {
+                let randomIndex = Int.random(in: 0..<verticalItems[index].horizontalItems.count)
+                let updatedRandomNumber = Int.random(in: 1...100)
+                verticalItems[index].horizontalItems[randomIndex].number = updatedRandomNumber
+                updateIndicies.append(randomIndex)
             }
+            updateRandomHorizontalCell?(updateIndicies)
+            backgroundLock.unlock()
         }
     }
 }
